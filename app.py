@@ -55,7 +55,7 @@ filtered_df = df_grouped.set_index(["Year", "Category"]) \
 st.title("📊 Santa Clara University Waste Visualization Dashboard")
 st.markdown("Analyze and explore trends in campus waste streams by year and category.")
 
-custom_colors = ['#c7d86e', '#ff7e47', '#28ab9d', '#f37fb9']
+custom_colors = ['#28ab9d', '#ff7e47', '#c7d86e', '#f37fb9']
 
 # --- Pie Chart ---
 st.subheader(f"🟢 Total Waste Distribution ({min_year} to {max_year})")
