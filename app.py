@@ -57,55 +57,69 @@ st.markdown("Analyze and explore trends in campus waste streams by year and cate
 
 custom_colors = ['#28ab9d', '#ff7e47', '#c7d86e', '#f37fb9']
 
-# --- Pie Chart ---
-st.subheader(f"🟢 Total Waste Distribution ({min_year} to {max_year})")
-agg_pie = filtered_df.groupby("Category")["Weight (lbs)"].sum().reset_index()
-fig_pie = px.pie(agg_pie, names="Category", values="Weight (lbs)", hole=0.4,color_discrete_sequence=custom_colors)
-st.plotly_chart(fig_pie, use_container_width=True)
+# --- Visualization Grid Layout ---
 
-# --- Grouped Vertical Bar Chart ---
-st.subheader("🔵 Grouped Bar Chart: Waste by Year and Category")
-fig_bar = px.bar(
-    filtered_df,
-    x="Year",
-    y="Weight (lbs)",
-    color="Category",
-    barmode="group",
-    title="Grouped Waste Volumes Over Time",
-    color_discrete_sequence=custom_colors
-)
-fig_bar.update_xaxes(type='category', categoryarray=years_full)
-fig_bar.update_yaxes(title="Weight (lbs)")
-st.plotly_chart(fig_bar, use_container_width=True)
+# ROW 1: Bar Chart and Line Chart
+col1, col2 = st.columns(2)
 
-# --- Multi-Line Chart ---
-st.subheader("📈 Multi-Line Chart: Category Trends Over Time")
-fig_line = px.line(
-    filtered_df,
-    x="Year",
-    y="Weight (lbs)",
-    color="Category",
-    markers=True,
-    title="Yearly Waste Trend per Category",
-    color_discrete_sequence=custom_colors
-)
-fig_line.update_xaxes(type='category', categoryarray=years_full)
-st.plotly_chart(fig_line, use_container_width=True)
+with col1:
+    st.subheader("🔵 Grouped Bar Chart: Waste by Year and Category")
+    fig_bar = px.bar(
+        filtered_df,
+        x="Year",
+        y="Weight (lbs)",
+        color="Category",
+        barmode="group",
+        title="Grouped Waste Volumes Over Time",
+        color_discrete_sequence=custom_colors
+    )
+    fig_bar.update_xaxes(type='category', categoryarray=years_full)
+    fig_bar.update_yaxes(title="Weight (lbs)")
+    st.plotly_chart(fig_bar, use_container_width=True)
 
-# --- Dot Plot ---
-st.subheader("🔴 Dot Plot: Waste by Year and Category")
-fig_dot = px.scatter(
-    filtered_df,
-    x="Year",
-    y="Weight (lbs)",
-    color="Category",
-    size="Weight (lbs)",
-    hover_name="Category",
-    title="Waste Distribution Dots",
-    color_discrete_sequence=custom_colors
-)
-fig_dot.update_xaxes(type='category', categoryarray=years_full)
-st.plotly_chart(fig_dot, use_container_width=True)
+with col2:
+    st.subheader("📈 Multi-Line Chart: Category Trends Over Time")
+    fig_line = px.line(
+        filtered_df,
+        x="Year",
+        y="Weight (lbs)",
+        color="Category",
+        markers=True,
+        title="Yearly Waste Trend per Category",
+        color_discrete_sequence=custom_colors
+    )
+    fig_line.update_xaxes(type='category', categoryarray=years_full)
+    st.plotly_chart(fig_line, use_container_width=True)
+
+# ROW 2: Pie Chart and Dot Plot
+col3, col4 = st.columns(2)
+
+with col3:
+    st.subheader(f"🟢 Total Waste Distribution ({min_year} to {max_year})")
+    agg_pie = filtered_df.groupby("Category")["Weight (lbs)"].sum().reset_index()
+    fig_pie = px.pie(
+        agg_pie,
+        names="Category",
+        values="Weight (lbs)",
+        hole=0.4,
+        color_discrete_sequence=custom_colors
+    )
+    st.plotly_chart(fig_pie, use_container_width=True)
+
+with col4:
+    st.subheader("🔴 Dot Plot: Waste by Year and Category")
+    fig_dot = px.scatter(
+        filtered_df,
+        x="Year",
+        y="Weight (lbs)",
+        color="Category",
+        size="Weight (lbs)",
+        hover_name="Category",
+        title="Waste Distribution Dots",
+        color_discrete_sequence=custom_colors
+    )
+    fig_dot.update_xaxes(type='category', categoryarray=years_full)
+    st.plotly_chart(fig_dot, use_container_width=True)
 
 # --- Raw Data (optional) ---
 with st.expander("📄 View Filtered Data Table"):
